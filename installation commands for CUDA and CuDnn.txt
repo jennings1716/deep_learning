@@ -1,0 +1,30 @@
+Install CUDA
+    lspci | grep -i nvidia
+    uname -m && cat /etc/*release
+    wget http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/cuda-repo-ubuntu1604_9.0.176-1_amd64.deb
+    sudo dpkg -i cuda-repo-ubuntu1604_9.0.176-1_amd64.deb
+    sudo apt-key add /var/cuda-repo-9.0.176-1/7fa2af80.pub
+    sudo apt-key adv --fetch-keys http://developer.download.nvidia.com/compute/cuda/repos/9.0.176/amd64/7fa2af80.pub
+    sudo apt-get install cuda-9.0
+    export PATH=/usr/local/cuda-9.0/bin${PATH:+:${PATH}}
+    export LD_LIBRARY_PATH=/usr/local/cuda-9.0/lib64\
+                         ${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+    cd /usr/local/cuda-9.0/samples
+    sudo make
+    cd /usr/local/cuda/samples/bin/x86_64/linux/release
+    ./deviceQuery
+
+Install CuDnn
+    sudo dpkg -i libcudnn7_7.0.5.15-1+cuda9.0_amd64.deb
+    sudo dpkg -i libcudnn7-dev_7.0.5.15–1+cuda9.0_amd64.deb
+    sudo dpkg -i libcudnn7-doc_7.0.5.15-1+cuda9.0_amd64.deb
+    cp -r /usr/src/cudnn_samples_v7/ .
+    cd cudnn_samples_v7/mnistCUDNN
+    make clean && make
+
+Add in baschrc 
+    export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/local/cuda/extras/CUPTI/lib64"
+    source ~/.bashrc
+
+Checking
+    sess = tf.Session(config=tf.ConfigProto(log_device_placement=True))
